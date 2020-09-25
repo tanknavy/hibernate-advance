@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,8 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="student") // map to database table student
-public class Student {
+@Table(name="studentEnum") // map to database table student
+public class StudentEnum {
 	
 	@Id //primary key
 	@GeneratedValue(strategy=GenerationType.IDENTITY) //mysql AUTO_INCREMENT
@@ -32,18 +34,22 @@ public class Student {
 	//you might want to describe the expected precision in database.Temporal data can have DATE, TIME, or TIMESTAMP precision
 	//(i.e., the actual date, only the time, or both). Use the @Temporal annotation to fine tune that.
 	@Column(name="date_of_birth")
-	@Temporal(TemporalType.DATE) //date,time,timestamp
+	@Temporal(TemporalType.DATE) //date,time,timestamp精确控制
 	private Date dateOfBirth; // java.util.Date;
 	
 	@Column(name="email")
 	private String email;
 	
-	public Student() {
+	@Enumerated(EnumType.STRING) //字符串类型enum
+	@Column(name="status")
+	private Status status; //聚合枚举类Enum
+	
+	public StudentEnum() {
 		
 	}
 	
 	//����id��database������primary key,���Թ��캯���в���id
-	public Student(String firstName, String lastName, String email) {
+	public StudentEnum(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -51,7 +57,7 @@ public class Student {
 	}
 	
 	// ���������ֶ�
-	public Student(String firstName, String lastName, Date dateOfBirth, String email) {
+	public StudentEnum(String firstName, String lastName, Date dateOfBirth, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -71,11 +77,10 @@ public class Student {
 	public int getId() {
 		return id;
 	}
-	
-	//id is automatically increment in DB
-//	public void setId(int id) {
-//		this.id = id;
-//	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -107,6 +112,14 @@ public class Student {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	

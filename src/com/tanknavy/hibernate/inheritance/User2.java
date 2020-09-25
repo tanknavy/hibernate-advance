@@ -1,22 +1,34 @@
-package com.tanknavy.hibernate.entity;
+package com.tanknavy.hibernate.inheritance;
 
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+//类的继承和ORM
+
 @Entity
-@Table(name="student") // map to database table student
-public class Student {
+@Table(name="user2") // map to database table user
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)//单表，多表，join表，映射超类，默认单表
+//@DiscriminatorColumn(name="USER_TYPE", discriminatorType=DiscriminatorType.STRING) //标准子类的table栏位名
+public abstract class User2 { //抽象类
 	
 	@Id //primary key
-	@GeneratedValue(strategy=GenerationType.IDENTITY) //mysql AUTO_INCREMENT
+	//@GeneratedValue(strategy=GenerationType.IDENTITY) //mysql AUTO_INCREMENT
+	//跨多个表，id由各自表维护，hi会自动创建sequence table，线程安全地带取得下一个next_val
+	//为了访问sequence table, 增加线程池中线程数量
+	//如果是mysql8, 为了创建sequence table, 更新alect.MySQLDialect为alect.MySQL8Dialect
+	@GeneratedValue(strategy=GenerationType.TABLE)//跨多个表，hi将创建sequence table在数据库中并维护hibernate_sequences表
 	@Column(name="id")
 	private int id;
 	
@@ -38,12 +50,12 @@ public class Student {
 	@Column(name="email")
 	private String email;
 	
-	public Student() {
+	public User2() {
 		
 	}
 	
 	//����id��database������primary key,���Թ��캯���в���id
-	public Student(String firstName, String lastName, String email) {
+	public User2(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -51,7 +63,7 @@ public class Student {
 	}
 	
 	// ���������ֶ�
-	public Student(String firstName, String lastName, Date dateOfBirth, String email) {
+	public User2(String firstName, String lastName, Date dateOfBirth, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

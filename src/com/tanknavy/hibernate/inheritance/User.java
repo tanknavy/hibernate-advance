@@ -1,19 +1,27 @@
-package com.tanknavy.hibernate.entity;
+package com.tanknavy.hibernate.inheritance;
 
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+//类的继承和ORM
+
 @Entity
-@Table(name="student") // map to database table student
-public class Student {
+@Table(name="user") // map to database table user
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)//单表，多表，join表，映射超类，默认单表
+@DiscriminatorColumn(name="USER_TYPE", discriminatorType=DiscriminatorType.STRING) //标准子类的table栏位名
+public abstract class User { //抽象类
 	
 	@Id //primary key
 	@GeneratedValue(strategy=GenerationType.IDENTITY) //mysql AUTO_INCREMENT
@@ -38,12 +46,12 @@ public class Student {
 	@Column(name="email")
 	private String email;
 	
-	public Student() {
+	public User() {
 		
 	}
 	
 	//����id��database������primary key,���Թ��캯���в���id
-	public Student(String firstName, String lastName, String email) {
+	public User(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -51,7 +59,7 @@ public class Student {
 	}
 	
 	// ���������ֶ�
-	public Student(String firstName, String lastName, Date dateOfBirth, String email) {
+	public User(String firstName, String lastName, Date dateOfBirth, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

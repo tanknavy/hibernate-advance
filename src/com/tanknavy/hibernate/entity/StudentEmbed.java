@@ -2,7 +2,10 @@ package com.tanknavy.hibernate.entity;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,6 +38,18 @@ public class StudentEmbed {
 	@Column(name="email")
 	private String email;
 	
+	@Embedded //可写可不写，hb can infer
+	private Address homeAddress;
+	
+	//聚合类，但是修改字段在表中栏位名
+	@AttributeOverrides({
+		@AttributeOverride(name="street", column=@Column(name="BILLING_STREET")),
+		@AttributeOverride(name="city", column=@Column(name="BILLING_CITY")),
+		@AttributeOverride(name="zipcode", column=@Column(name="BILLING_ZIPCODE"))
+	})
+	private Address billingAddress; //embedded value type实现代码重用,栏位可以被override
+	
+	//---------------------------------------
 	public StudentEmbed() {
 		
 	}
@@ -103,6 +118,22 @@ public class StudentEmbed {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	public Address getHomeAddress() {
+		return homeAddress;
+	}
+
+	public void setHomeAddress(Address homeAddress) {
+		this.homeAddress = homeAddress;
+	}
+
+	public Address getBillingAddress() {
+		return billingAddress;
+	}
+
+	public void setBillingAddress(Address billingAddress) {
+		this.billingAddress = billingAddress;
 	}
 
 	
