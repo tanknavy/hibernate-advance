@@ -1,32 +1,19 @@
 package com.tanknavy.hibernate.entity;
 
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-//import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.OrderBy;
-
-//collection set use HashSet
-//if need ordered base insert, use LinkedHashSet
-
 @Entity
-@Table(name="studentSet") // map to database table student
-public class StudentSet {
+@Table(name="studentEmbed") // map to database table student
+public class StudentEmbed {
 	
 	@Id //primary key
 	@GeneratedValue(strategy=GenerationType.IDENTITY) //mysql AUTO_INCREMENT
@@ -48,29 +35,12 @@ public class StudentSet {
 	@Column(name="email")
 	private String email;
 	
-
-	//join to table "image" on student2.id = image.student_id
-	@ElementCollection
-	@CollectionTable(name="image", 
-	                 joinColumns = @JoinColumn(name="student_id")) //can be deleted
-	//javax OrderBy only asc, use org.hibernate can asc/desc
-	//OrderBy sort in the database, but if want to custom business logic for sort, do it in memory
-	//@OrderBy("file_name") //javax.persistence.OrderBy;
-	@OrderBy(clause="file_name desc") //LinkedHashSet maintain insertion order, TreeSet use my comparator
-	@Column(name="file_name") //defaults to images, map to table image(file_name)
-	//private Set<String> images = new HashSet<String>();
-	//LinkedHashSet maintain insertion order, TreeSet use my comparator
-	private Set<String> images = new LinkedHashSet<String>(); //@OrderBy("file_name DESC")
-	//OrderBy可以定制自己的比较类，实现Comparator接口
-	
-	
-	//--------constructor------------
-	public StudentSet() {
+	public StudentEmbed() {
 		
 	}
 	
 	//����id��database������primary key,���Թ��캯���в���id
-	public StudentSet(String firstName, String lastName, String email) {
+	public StudentEmbed(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -78,7 +48,7 @@ public class StudentSet {
 	}
 	
 	// ���������ֶ�
-	public StudentSet(String firstName, String lastName, Date dateOfBirth, String email) {
+	public StudentEmbed(String firstName, String lastName, Date dateOfBirth, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -134,14 +104,7 @@ public class StudentSet {
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	
-	public Set<String> getImages() {
-		return images;
-	}
 
-	public void setImages(Set<String> images) {
-		this.images = images;
-	}
 	
 	
 }
