@@ -11,7 +11,7 @@ public class CreateStudentImagesMapDemo {
 
 	public static void main(String[] args) {
 		//1.create session factory
-		SessionFactory factory = new Configuration().configure("resources/hibernate.cfg7.xml")
+		SessionFactory factory = new Configuration().configure("resources/hibernate.cfg6.xml") //6:create-only, 7:create,8:update
 				//.addAnnotatedClass(Instructor.class)
 				//.addAnnotatedClass(InstructorDetail.class)
 				//.addAnnotatedClass(Course.class)
@@ -23,13 +23,13 @@ public class CreateStudentImagesMapDemo {
 		
 		try {
 			//3.create the object
-			StudentMap tempStudent = new StudentMap("Scala", "success","spark@gmail.com");
+			StudentMap tempStudent = new StudentMap("Golang", "success","spark@gmail.com");
 			Map<String,String> theImages = tempStudent.getImages();
 			
 			theImages.put("azusa.jpg", "photo 1");
-			theImages.put("hebei.jpg","photo 2");
-			theImages.put("chucai.jpg", "photo 3");
-			theImages.put("fuji.jpg","photo 4");
+			theImages.put("chucai.jpg","photo 2");
+			theImages.put("fuji.jpg", "photo 3");
+			theImages.put("hebei.jpg","photo 4");
 			theImages.put("azusa.jpg","photo 5");
 			
 			//4.start a session

@@ -10,7 +10,7 @@ public class CreateStudentImagesSetDemo {
 
 	public static void main(String[] args) {
 		//1.create session factory
-		SessionFactory factory = new Configuration().configure("resources/hibernate.cfg.xml")
+		SessionFactory factory = new Configuration().configure("resources/hibernate.cfg6.xml") //create-only
 				//.addAnnotatedClass(Instructor.class)
 				//.addAnnotatedClass(InstructorDetail.class)
 				//.addAnnotatedClass(Course.class)
@@ -22,12 +22,12 @@ public class CreateStudentImagesSetDemo {
 		
 		try {
 			//3.create the object
-			StudentSet tempStudent = new StudentSet("Spark", "success","spark@gmail.com");
+			StudentSet tempStudent = new StudentSet("Golang", "success","spark@gmail.com");
 			Set<String> theImages = tempStudent.getImages();
 			
 			theImages.add("azusa.jpg");
-			theImages.add("hebei.jpg");
 			theImages.add("chucai.jpg");
+			theImages.add("hebei.jpg");
 			theImages.add("fuji.jpg");
 			theImages.add("azusa.jpg");
 			

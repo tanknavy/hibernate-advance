@@ -2,6 +2,7 @@ package com.tanknavy.hibernate.entity;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -12,14 +13,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+//import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//collection set
+import org.hibernate.annotations.OrderBy;
+
+//collection set use HashSet
+//if need ordered base insert, use LinkedHashSet
 
 @Entity
-@Table(name="student") // map to database table student
+@Table(name="studentSet") // map to database table student
 public class StudentSet {
 	
 	@Id //primary key
@@ -46,9 +51,14 @@ public class StudentSet {
 	//join to table "image" on student2.id = image.student_id
 	@ElementCollection
 	@CollectionTable(name="image", 
-	                 joinColumns = @JoinColumn(name="student_id"))
+	                 joinColumns = @JoinColumn(name="student_id")) //can be deleted
+	//javax OrderBy only asc, use org.hibernate can asc/desc
+	//@OrderBy("file_name") //javax.persistence.OrderBy;
+	@OrderBy(clause="file_name desc") //LinkedHashSet maintain insertion order, TreeSet use my comparator
 	@Column(name="file_name") //defaults to images, map to table image(file_name)
-	private Set<String> images = new HashSet<String>();
+	//private Set<String> images = new HashSet<String>();
+	//LinkedHashSet maintain insertion order, TreeSet use my comparator
+	private Set<String> images = new LinkedHashSet<String>(); //@OrderBy("file_name DESC")
 	
 	
 	//--------constructor------------

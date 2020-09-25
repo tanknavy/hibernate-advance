@@ -1,10 +1,10 @@
 package com.tanknavy.hibernate.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -15,12 +15,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
+//import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//collection List(ordered)
+import org.hibernate.annotations.OrderBy;
+
+//collection Map(unordered), LinkedHashMap<String, String> if ordered based on insert
 
 @Entity
 @Table(name="studentMap") // map to database table student
@@ -51,9 +54,13 @@ public class StudentMap {
 	@ElementCollection
 	@CollectionTable(name="image3" )//, joinColumns = @JoinColumn(name="student_id")) //joinColumns can be ignored!
 	@MapKeyColumn(name="file_name")
+	//javax OrderBy only asc, use org.hibernate can asc/desc
+	//@OrderBy("file_name") //javax.persistence.OrderBy;
+	@OrderBy(clause="file_name desc") //LinkedHashSet maintain insertion order, TreeSet use my comparator
 	@Column(name="image_name") //defaults to images, map to table image(file_name)
-	private Map<String, String> images = new HashMap<String, String>(); //List
-	
+	//private Map<String, String> images = new HashMap<String, String>(); //unordered
+	//private Map<String, String> images = new LinkedHashMap<String, String>();
+	private Map<String, String> images = new TreeMap<String, String>();
 	
 	//--------constructor------------
 	public StudentMap() {
